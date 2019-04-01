@@ -1,0 +1,48 @@
+﻿<div class="jumbotron">
+	<h1>ASP.NET</h1>
+	<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+	<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<input type="button" id="runFull" value="Run Full" />
+
+<div id="body">
+	<ul id="team"></ul>
+</div>
+
+@section scripts {
+
+	<script type="text/javascript">
+
+		$("#runFull").click(function() {
+			var team = { numberOfMembers: 50, meals: { 'vegetarian': 5, 'glutenfree': 7 } };
+
+			var teamString = JSON.stringify(team);
+
+			$.post("api/team", teamString, function(value) 
+			{ 
+				var restaurant1 = { name: "A", rating: 5, numberOfMeals: 40, meals: { 'vegetarian': 4} };
+				var rString1 = JSON.stringify(restaurant1);
+				$.post("api/restaurant", rString1, function(value) 
+				{ 
+					var restaurant2 = { name: "B", rating: 3, numberOfMeals: 100, meals: { 'vegetarian': 20, 'glutenfree': 20} };
+					var rString2 = JSON.stringify(restaurant2);
+					$.post("api/restaurant", rString2, function(value) 
+					{ 
+						$.getJSON('/api/meal', function(r) {
+							$.each(r, function(key, value) {
+								alert(key);
+								$("#team").append("<li>" + key + "</li>");
+
+								$.each(value, function(key1, value1) {
+									$("#team").append("<li>" + key1 + ": " + value1 + "</li>");
+								});
+							});
+						});
+					}, "json");
+				}, "json");
+			}, "json");
+		});
+
+	</script>
+}
