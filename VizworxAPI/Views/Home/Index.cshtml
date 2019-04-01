@@ -1,48 +1,126 @@
 ﻿<div class="jumbotron">
-	<h1>ASP.NET</h1>
-	<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-	<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+	<h1>Vizworx API</h1>
+	<p class="lead">Team Member Order Challenge</p>
 </div>
 
-<input type="button" id="runFull" value="Run Full" />
+<h2>Full Example</h2>
+<p>
+	Full example includes creating a team with 50 members who needs 5 vegetarian and 7 gluten-free meals.
+	Restaurant A has a rating of 5/5 and can server 40 meals including 4 vegetarians. Restaurant B has a rating of 
+	3/5 and can serve 100 meals including 20 vegetarians and 20 gluten-free.
+</p>
+
+<button class="btn btn-primary" type="button" id="runFull">Run Full Example</button>
 
 <div id="body">
-	<ul id="team"></ul>
+	<h3>Team</h3>
+	<table class="table table-bordered" id="teamTable">
+		<tbody id="team">
+
+		</tbody>
+	</table>
+
+	<h3>Restaurants</h3>
+	<div id="restaurants">
+		
+	</div>
+
+	<h3>Meal Order</h3>
+	<div id="mealOrder"></div>
 </div>
 
 @section scripts {
 
 	<script type="text/javascript">
-
+		// This block of code posts information about the team and the two restaurants.
+		// It is implemented so each post is done after the last one has successfully completed.
+		// Lastly, a GET call is used to retrieve the meal order.
 		$("#runFull").click(function() {
 			var team = { numberOfMembers: 50, meals: { 'vegetarian': 5, 'glutenfree': 7 } };
-
+			displayTeamInformation(team);
 			var teamString = JSON.stringify(team);
 
 			$.post("api/team", teamString, function(value) 
 			{ 
 				var restaurant1 = { name: "A", rating: 5, numberOfMeals: 40, meals: { 'vegetarian': 4} };
+				displayRestaurantInformation(restaurant1);
 				var rString1 = JSON.stringify(restaurant1);
 				$.post("api/restaurant", rString1, function(value) 
 				{ 
 					var restaurant2 = { name: "B", rating: 3, numberOfMeals: 100, meals: { 'vegetarian': 20, 'glutenfree': 20} };
+					displayRestaurantInformation(restaurant2);
 					var rString2 = JSON.stringify(restaurant2);
 					$.post("api/restaurant", rString2, function(value) 
 					{ 
-						$.getJSON('/api/meal', function(r) {
-							$.each(r, function(key, value) {
-								alert(key);
-								$("#team").append("<li>" + key + "</li>");
-
-								$.each(value, function(key1, value1) {
-									$("#team").append("<li>" + key1 + ": " + value1 + "</li>");
-								});
-							});
+						$.getJSON('/api/meal', function(mealOrder) {
+							displayMealOrder(mealOrder);
 						});
 					}, "json");
 				}, "json");
 			}, "json");
 		});
+
+		// Displays the team information in the HTML.
+		function displayTeamInformation(team) {
+			$.each(team, function(key, value) {
+
+				if (key == "meals") {
+					$.each(value, function(key1, value1) {
+						$("#team").append("<tr><th scope='row'>" + key1 + "</th><td>" + value1 + "</td></tr>");
+					});
+				}
+
+				else {
+					$("#team").append("<tr><th scope='row'>" + key + "</th><td>" + value + "</td></tr>");
+				}
+			});
+		}
+
+		// Displays the restaurant information in the HTML.
+		function displayRestaurantInformation(restaurant) {
+			var appendString = "<table class='table table-bordered' id='" + restaurant.name + "'>";
+			appendString += "<thead><tr><th scope='col' colspan='2'>" + restaurant.name + "</th></tr></thead><tbody>";
+			$.each(restaurant, function(key, value) {
+				if (key == "meals") {
+					$.each(value, function(key1, value1) {
+						appendString += "<tr><th scope='row'>" + key1 + "</th><td>" + value1 + "</td></tr>";
+					});
+				}
+
+				else if (key != "name") {
+					appendString += "<tr><th scope='row'>" + key + "</th><td>" + value + "</td></tr>";
+				}
+			});
+
+			appendString += "</tbody></table>";
+
+			document.getElementById("restaurants").innerHTML += appendString;
+		}
+
+		// Displays the meal order information in the HTML.
+		function displayMealOrder(mealOrder) {
+			console.log(mealOrder);
+
+			$.each(mealOrder, function(key, value) {
+				var appendString = "<table class='table table-bordered' id='" + key + "meal'>";
+				appendString += "<thead><tr><th scope='col' colspan='2'>" + key + "</th></tr></thead><tbody>";
+
+				$.each(value, function(key1, value1) {
+					if (key == "meals") {
+						$.each(value, function(key2, value2) {
+							appendString += "<tr><th scope='row'>" + key2 + "</th><td>" + value2 + "</td></tr>";
+						});
+					}
+
+					else if (key != "name") {
+						appendString += "<tr><th scope='row'>" + key1 + "</th><td>" + value1 + "</td></tr>";
+					}
+				});
+
+				appendString += "</tbody></table>";
+				document.getElementById("mealOrder").innerHTML += appendString;
+			});
+		}
 
 	</script>
 }

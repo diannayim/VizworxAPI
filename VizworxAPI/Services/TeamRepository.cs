@@ -6,10 +6,19 @@ using VizworxAPI.Models;
 
 namespace VizworxAPI.Services
 {
+    /// <summary>
+    /// Class which holds the logic for Teams.
+    /// </summary>
     public class TeamRepository
     {
+        /// <summary>
+        /// Cache key needed for data storage within HTTP Context.
+        /// </summary>
         private const string CacheKey = "Team";
 
+        /// <summary>
+        /// Creates a team repository and sets up an empty list of restaurants.
+        /// </summary>
         public TeamRepository()
         {
             var ctx = HttpContext.Current;
@@ -23,6 +32,10 @@ namespace VizworxAPI.Services
             }
         }
 
+        /// <summary>
+        /// Gets team from HTTP Context.
+        /// </summary>
+        /// <returns>Team.</returns>
         public Team GetTeam()
         {
             var ctx = HttpContext.Current;
@@ -35,7 +48,12 @@ namespace VizworxAPI.Services
             return new Team();
         }
 
-        public bool SaveTeam(Team team)
+        /// <summary>
+        /// Saves team to HTTP Context.
+        /// </summary>
+        /// <param name="team">Team to save.</param>
+        /// <returns></returns>
+        public void SaveTeam(Team team)
         {
             var ctx = HttpContext.Current;
 
@@ -43,21 +61,9 @@ namespace VizworxAPI.Services
 
             if (ctx != null)
             {
-                try
-                {
-                    ctx.Cache[CacheKey] = team;
-
-                    return true;
-                }
-
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    return false;
-                }
+                ctx.Cache[CacheKey] = team;
             }
 
-            return false;
         }
     }
 }

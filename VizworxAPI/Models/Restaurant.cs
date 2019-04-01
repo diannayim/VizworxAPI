@@ -5,6 +5,9 @@ using System.Web;
 
 namespace VizworxAPI.Models
 {
+    /// <summary>
+    /// Restaurant object that contains unique name of restaurant, rating, number of meals and special meals.
+    /// </summary>
     public class Restaurant
     {
         public string name;

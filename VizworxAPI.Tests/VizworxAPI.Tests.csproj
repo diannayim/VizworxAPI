@@ -98,10 +98,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MealTests.cs" />
+    <Compile Include="Controllers\HelperFunctionTests.cs" />
+    <Compile Include="Controllers\MealTests.cs" />
+    <Compile Include="Controllers\RestaurantTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
-    <Compile Include="Controllers\ValuesControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

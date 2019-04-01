@@ -11,6 +11,9 @@ using VizworxAPI.Services;
 
 namespace VizworxAPI.Controllers
 {
+    /// <summary>
+    /// Controller for team.
+    /// </summary>
     public class TeamController : ApiController
     {
         private TeamRepository teamRepository;
