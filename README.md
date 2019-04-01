@@ -1,4 +1,4 @@
-# VizworxAPI
+# Vizworx Code Challenge
 
 **Disclaimer**: Most of the error checking for this application has not been done. Some of the assumptions are written below but it assumes almost perfect user input with this system and no fatal errors occurring.
 
