@@ -1,5 +1,10 @@
 # VizworxAPI
 
+**Disclaimer**: Most of the error checking for this application has not been done. Some of the assumptions are written below but it assumes almost perfect user input with this system and no fatal errors occurring.
+
+## How to Run
+Tests have been automated in two ways. The first is running the application normally, which pulls up a webpage. Clicking the button "Run Full Example" will display the meal order provided the information in the example. The second is the automated unit tests that have been implemented. Running VizworxAPI.Tests will run through the unit tests that I have implemented to check some of the functions that I have made.
+
 ## Assumptions
 
 * All restaurant names are unique.
